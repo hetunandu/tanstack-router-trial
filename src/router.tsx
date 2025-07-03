@@ -10,6 +10,7 @@ export interface RouterContext {
       email: string
       firstName: string
       lastName: string
+      role: 'user' | 'admin'
     } | null
     isAuthenticated: boolean
     isLoading: boolean

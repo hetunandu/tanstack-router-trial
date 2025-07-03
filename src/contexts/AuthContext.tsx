@@ -5,6 +5,7 @@ interface User {
   email: string
   firstName: string
   lastName: string
+  role: 'user' | 'admin'
 }
 
 interface AuthContextType {
@@ -33,13 +34,15 @@ const mockUsers: User[] = [
     id: '1',
     email: 'test@example.com',
     firstName: 'Test',
-    lastName: 'User'
+    lastName: 'User',
+    role: 'user'
   },
   {
     id: '2', 
     email: 'admin@example.com',
     firstName: 'Admin',
-    lastName: 'User'
+    lastName: 'User',
+    role: 'admin'
   }
 ]
 
@@ -98,7 +101,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       id: Date.now().toString(),
       email: userData.email,
       firstName: userData.firstName,
-      lastName: userData.lastName
+      lastName: userData.lastName,
+      role: 'user'
     }
 
     // Add to mock database

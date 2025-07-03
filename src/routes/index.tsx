@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useAuth } from '../contexts/AuthContext'
 import '../App.css'
 
 export const Route = createFileRoute('/')({
@@ -7,7 +6,7 @@ export const Route = createFileRoute('/')({
 })
 
 function App() {
-  const { user, isAuthenticated, logout, isLoading } = useAuth()
+  const { user, isAuthenticated, logout, isLoading } = Route.useRouteContext().auth
 
   if (isLoading) {
     return (
@@ -31,6 +30,19 @@ function App() {
           marginTop: '2rem',
           flexWrap: 'wrap'
         }}>
+          <Link 
+            to="/settings"
+            style={{
+              padding: '0.75rem 1.5rem',
+              backgroundColor: '#1976d2',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '4px',
+              fontWeight: '500'
+            }}
+          >
+            Go to Settings
+          </Link>
           <Link 
             to="/apps"
             style={{

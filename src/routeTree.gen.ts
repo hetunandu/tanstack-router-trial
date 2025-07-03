@@ -12,10 +12,16 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as SettingsRouteRouteImport } from './routes/settings/route'
 import { Route as AppsRouteRouteImport } from './routes/apps/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppsListRouteImport } from './routes/apps/list'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
+import { Route as AppsIndexRouteImport } from './routes/apps/index'
+import { Route as SettingsDeploymentRouteImport } from './routes/settings/deployment'
+import { Route as SettingsAuthRouteImport } from './routes/settings/auth'
+import { Route as AppsHeaderRouteImport } from './routes/apps/header'
 import { Route as AppsIdRouteImport } from './routes/apps/$id'
+import { Route as SettingsAdminIndexRouteImport } from './routes/settings/admin/index'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -32,6 +38,11 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRouteRoute = SettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppsRouteRoute = AppsRouteRouteImport.update({
   id: '/apps',
   path: '/apps',
@@ -42,9 +53,29 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppsListRoute = AppsListRouteImport.update({
-  id: '/list',
-  path: '/list',
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const AppsIndexRoute = AppsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppsRouteRoute,
+} as any)
+const SettingsDeploymentRoute = SettingsDeploymentRouteImport.update({
+  id: '/deployment',
+  path: '/deployment',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const SettingsAuthRoute = SettingsAuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const AppsHeaderRoute = AppsHeaderRouteImport.update({
+  id: '/header',
+  path: '/header',
   getParentRoute: () => AppsRouteRoute,
 } as any)
 const AppsIdRoute = AppsIdRouteImport.update({
@@ -52,68 +83,106 @@ const AppsIdRoute = AppsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AppsRouteRoute,
 } as any)
+const SettingsAdminIndexRoute = SettingsAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/apps': typeof AppsRouteRouteWithChildren
+  '/settings': typeof SettingsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/apps/$id': typeof AppsIdRoute
-  '/apps/list': typeof AppsListRoute
+  '/apps/header': typeof AppsHeaderRoute
+  '/settings/auth': typeof SettingsAuthRoute
+  '/settings/deployment': typeof SettingsDeploymentRoute
+  '/apps/': typeof AppsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/settings/admin': typeof SettingsAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/apps': typeof AppsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/apps/$id': typeof AppsIdRoute
-  '/apps/list': typeof AppsListRoute
+  '/apps/header': typeof AppsHeaderRoute
+  '/settings/auth': typeof SettingsAuthRoute
+  '/settings/deployment': typeof SettingsDeploymentRoute
+  '/apps': typeof AppsIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/settings/admin': typeof SettingsAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/apps': typeof AppsRouteRouteWithChildren
+  '/settings': typeof SettingsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/apps/$id': typeof AppsIdRoute
-  '/apps/list': typeof AppsListRoute
+  '/apps/header': typeof AppsHeaderRoute
+  '/settings/auth': typeof SettingsAuthRoute
+  '/settings/deployment': typeof SettingsDeploymentRoute
+  '/apps/': typeof AppsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/settings/admin/': typeof SettingsAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/apps'
+    | '/settings'
     | '/about'
     | '/login'
     | '/signup'
     | '/apps/$id'
-    | '/apps/list'
+    | '/apps/header'
+    | '/settings/auth'
+    | '/settings/deployment'
+    | '/apps/'
+    | '/settings/'
+    | '/settings/admin'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/apps'
     | '/about'
     | '/login'
     | '/signup'
     | '/apps/$id'
-    | '/apps/list'
+    | '/apps/header'
+    | '/settings/auth'
+    | '/settings/deployment'
+    | '/apps'
+    | '/settings'
+    | '/settings/admin'
   id:
     | '__root__'
     | '/'
     | '/apps'
+    | '/settings'
     | '/about'
     | '/login'
     | '/signup'
     | '/apps/$id'
-    | '/apps/list'
+    | '/apps/header'
+    | '/settings/auth'
+    | '/settings/deployment'
+    | '/apps/'
+    | '/settings/'
+    | '/settings/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppsRouteRoute: typeof AppsRouteRouteWithChildren
+  SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
@@ -142,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/apps': {
       id: '/apps'
       path: '/apps'
@@ -156,11 +232,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/apps/list': {
-      id: '/apps/list'
-      path: '/list'
-      fullPath: '/apps/list'
-      preLoaderRoute: typeof AppsListRouteImport
+    '/settings/': {
+      id: '/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/apps/': {
+      id: '/apps/'
+      path: '/'
+      fullPath: '/apps/'
+      preLoaderRoute: typeof AppsIndexRouteImport
+      parentRoute: typeof AppsRouteRoute
+    }
+    '/settings/deployment': {
+      id: '/settings/deployment'
+      path: '/deployment'
+      fullPath: '/settings/deployment'
+      preLoaderRoute: typeof SettingsDeploymentRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/settings/auth': {
+      id: '/settings/auth'
+      path: '/auth'
+      fullPath: '/settings/auth'
+      preLoaderRoute: typeof SettingsAuthRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/apps/header': {
+      id: '/apps/header'
+      path: '/header'
+      fullPath: '/apps/header'
+      preLoaderRoute: typeof AppsHeaderRouteImport
       parentRoute: typeof AppsRouteRoute
     }
     '/apps/$id': {
@@ -170,26 +274,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppsIdRouteImport
       parentRoute: typeof AppsRouteRoute
     }
+    '/settings/admin/': {
+      id: '/settings/admin/'
+      path: '/admin'
+      fullPath: '/settings/admin'
+      preLoaderRoute: typeof SettingsAdminIndexRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
   }
 }
 
 interface AppsRouteRouteChildren {
   AppsIdRoute: typeof AppsIdRoute
-  AppsListRoute: typeof AppsListRoute
+  AppsHeaderRoute: typeof AppsHeaderRoute
+  AppsIndexRoute: typeof AppsIndexRoute
 }
 
 const AppsRouteRouteChildren: AppsRouteRouteChildren = {
   AppsIdRoute: AppsIdRoute,
-  AppsListRoute: AppsListRoute,
+  AppsHeaderRoute: AppsHeaderRoute,
+  AppsIndexRoute: AppsIndexRoute,
 }
 
 const AppsRouteRouteWithChildren = AppsRouteRoute._addFileChildren(
   AppsRouteRouteChildren,
 )
 
+interface SettingsRouteRouteChildren {
+  SettingsAuthRoute: typeof SettingsAuthRoute
+  SettingsDeploymentRoute: typeof SettingsDeploymentRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+  SettingsAdminIndexRoute: typeof SettingsAdminIndexRoute
+}
+
+const SettingsRouteRouteChildren: SettingsRouteRouteChildren = {
+  SettingsAuthRoute: SettingsAuthRoute,
+  SettingsDeploymentRoute: SettingsDeploymentRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+  SettingsAdminIndexRoute: SettingsAdminIndexRoute,
+}
+
+const SettingsRouteRouteWithChildren = SettingsRouteRoute._addFileChildren(
+  SettingsRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppsRouteRoute: AppsRouteRouteWithChildren,
+  SettingsRouteRoute: SettingsRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,

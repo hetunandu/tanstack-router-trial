@@ -8,7 +8,7 @@ const apps = [
   { id: '5', name: 'App 5 - Next.js Blog' },
 ]
 
-export const Route = createFileRoute('/apps/list')({
+export const Route = createFileRoute('/apps/')({
   component: RouteComponent,
 })
 
