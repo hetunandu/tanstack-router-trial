@@ -1,28 +1,43 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { RouterProvider } from '@tanstack/react-router'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-// Import the generated route tree
-import { routeTree } from './routeTree.gen'
-
+import { router } from './router'
+import { AuthProvider, useAuth } from './contexts/AuthContext'
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
 
-// Create a new router instance
-const router = createRouter({
-  routeTree,
-  context: {},
-  defaultPreload: 'intent',
-  scrollRestoration: true,
-  defaultStructuralSharing: true,
-  defaultPreloadStaleTime: 0,
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    },
+  },
 })
 
-// Register the router instance for type safety
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router
-  }
+function InnerApp() {
+  const auth = useAuth()
+  
+  return (
+    <>
+      <RouterProvider router={router} context={{ auth, queryClient }} />
+      {/* DevTools to visualize query states and preloading */}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </>
+  )
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <InnerApp />
+      </AuthProvider>
+    </QueryClientProvider>
+  )
 }
 
 // Render the app
@@ -31,7 +46,7 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <App />
     </StrictMode>,
   )
 }

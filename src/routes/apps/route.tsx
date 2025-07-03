@@ -1,15 +1,14 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect, useNavigate } from '@tanstack/react-router'
+import { useAuth } from '../../contexts/AuthContext'
 
 export const Route = createFileRoute('/apps')({
-  beforeLoad: ({ context }) => {
-    console.log('beforeLoad', context)
-    // Check if user is authenticated
-    const user = localStorage.getItem('tanstack_auth_user')
-    if (!user) {
+  beforeLoad: ({ context, location }) => {
+    // Check if user is authenticated using router context
+    if (!context.auth.isAuthenticated || !context.auth.user) {
       throw redirect({
         to: '/login',
         search: {
-          redirect: '/apps'
+          redirect: location.href
         }
       })
     }
@@ -37,11 +36,18 @@ function RouteComponent() {
 }
 
 function AuthenticatedUserInfo() {
-  const user = JSON.parse(localStorage.getItem('tanstack_auth_user') || '{}')
+  const routeContext = Route.useRouteContext()
+  const { user } = routeContext.auth
+  const { logout } = useAuth()
+  const navigate = useNavigate()
   
   const handleLogout = () => {
-    localStorage.removeItem('tanstack_auth_user')
-    window.location.href = '/'
+    logout()
+    navigate({ to: '/' })
+  }
+
+  if (!user) {
+    return null
   }
 
   return (
