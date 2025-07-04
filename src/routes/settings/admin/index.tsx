@@ -1,8 +1,11 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createRoute, redirect } from '@tanstack/react-router'
+import { settingsRoute } from '../route'
 
-export const Route = createFileRoute('/settings/admin/')({
+export const settingsAdminIndexRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: '/admin',
   beforeLoad: ({ context }) => {
-    if (!context.auth.isAuthenticated || !context.auth.user || context.auth.user.role !== 'admin') {
+    if (!context.auth.user || context.auth.user.role !== 'admin') {
       throw redirect({
         to: '/settings',
       })

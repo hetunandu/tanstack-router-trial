@@ -1,12 +1,15 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createRoute, Link } from '@tanstack/react-router'
+import { rootRoute } from './root'
 import '../App.css'
 
-export const Route = createFileRoute('/')({
+export const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
   component: App,
 })
 
 function App() {
-  const { user, isAuthenticated, logout, isLoading } = Route.useRouteContext().auth
+  const { auth: { user, isAuthenticated, logout, isLoading } } = indexRoute.useRouteContext()
 
   if (isLoading) {
     return (

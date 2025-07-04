@@ -1,8 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { appQueryOptions } from '../../lib/query-options'
+import { appsRoute } from './route'
 
-export const Route = createFileRoute('/apps/$id')({
+export const appDetailRoute = createRoute({
+  getParentRoute: () => appsRoute,
+  path: '/$id',
   loader: async ({ params: { id }, context: { queryClient } }) => {
     if (!id) {
       throw new Error('No app ID provided')
@@ -17,7 +20,7 @@ export const Route = createFileRoute('/apps/$id')({
 })
 
 function RouteComponent() {
-  const { id } = Route.useParams()
+  const { id } = appDetailRoute.useParams()
   
   // Use suspense query to access the cached data
   const { data: appData } = useSuspenseQuery(appQueryOptions(id))

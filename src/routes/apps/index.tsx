@@ -1,4 +1,5 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { Link, createRoute } from '@tanstack/react-router'
+import { appsRoute } from './route'
 
 const apps = [
   { id: '1', name: 'App 1 - React Dashboard' },
@@ -8,7 +9,9 @@ const apps = [
   { id: '5', name: 'App 5 - Next.js Blog' },
 ]
 
-export const Route = createFileRoute('/apps/')({
+export const appsIndexRoute = createRoute({
+  getParentRoute: () => appsRoute,
+  path: '/',
   component: RouteComponent,
 })
 

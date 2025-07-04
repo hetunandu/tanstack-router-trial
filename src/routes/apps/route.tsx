@@ -1,7 +1,10 @@
-import { createFileRoute, Outlet, redirect, useNavigate } from '@tanstack/react-router'
-import { useAuth } from '../../contexts/AuthContext'
+import { createRoute, Outlet, redirect } from '@tanstack/react-router'
+import { rootRoute } from '../root'
+import AuthenticatedUserInfo from './components/AuthenticatedUserInfo'
 
-export const Route = createFileRoute('/apps')({
+export const appsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/apps',
   beforeLoad: ({ context, location }) => {
     // Check if user is authenticated using router context
     if (!context.auth.isAuthenticated || !context.auth.user) {
@@ -17,6 +20,8 @@ export const Route = createFileRoute('/apps')({
 })
 
 function RouteComponent() {
+  const { auth: { user, logout } } = appsRoute.useRouteContext()
+
   return (
     <>
       <header style={{ 
@@ -28,45 +33,10 @@ function RouteComponent() {
         alignItems: 'center'
       }}>
         <h2 style={{ margin: 0 }}>Apps Dashboard</h2>
-        <AuthenticatedUserInfo />
+        <AuthenticatedUserInfo user={user} logout={logout} />
       </header>
       <Outlet />
     </>
   )
 }
 
-function AuthenticatedUserInfo() {
-  const routeContext = Route.useRouteContext()
-  const { user } = routeContext.auth
-  const { logout } = useAuth()
-  const navigate = useNavigate()
-  
-  const handleLogout = () => {
-    logout()
-    navigate({ to: '/' })
-  }
-
-  if (!user) {
-    return null
-  }
-
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-      <span>Welcome, {user.firstName} {user.lastName}</span>
-      <button
-        onClick={handleLogout}
-        style={{
-          padding: '0.5rem 1rem',
-          backgroundColor: '#d32f2f',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          fontSize: '0.875rem'
-        }}
-      >
-        Logout
-      </button>
-    </div>
-  )
-}

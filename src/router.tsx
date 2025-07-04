@@ -1,17 +1,12 @@
 import { createRouter } from '@tanstack/react-router'
 import { QueryClient } from '@tanstack/react-query'
 import { routeTree } from './routes'
+import type { User } from './types/user'
 
 // Define the router context interface
 export interface RouterContext {
   auth: {
-    user: {
-      id: string
-      email: string
-      firstName: string
-      lastName: string
-      role: 'user' | 'admin'
-    } | null
+    user: User | null
     isAuthenticated: boolean
     isLoading: boolean
   }

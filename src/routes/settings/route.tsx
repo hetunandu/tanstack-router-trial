@@ -1,6 +1,9 @@
-import { Link, createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { Link, createRoute, Outlet, redirect } from '@tanstack/react-router'
+import { rootRoute } from '../root'
 
-export const Route = createFileRoute('/settings')({
+export const settingsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/settings',
   beforeLoad: ({ context }) => {
     if (!context.auth.isAuthenticated || !context.auth.user) {
       throw redirect({
@@ -16,7 +19,7 @@ export const Route = createFileRoute('/settings')({
 
 // sidebar with links to /settings/admin and /settings/deploy ment
 function RouteComponent() {
-  const routeContext = Route.useRouteContext()
+  const routeContext = settingsRoute.useRouteContext()
   const { user } = routeContext.auth
 
   return <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>

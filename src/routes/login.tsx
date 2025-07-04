@@ -1,8 +1,11 @@
-import { createFileRoute, Link, useNavigate, useSearch } from '@tanstack/react-router'
+import { createRoute, Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import { rootRoute } from './root'
 
-export const Route = createFileRoute('/login')({
+export const loginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/login',
   validateSearch: (search: Record<string, unknown>) => ({
     redirect: search.redirect as string | undefined,
   }),

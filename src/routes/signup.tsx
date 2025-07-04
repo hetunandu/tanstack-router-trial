@@ -1,8 +1,11 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createRoute, Link, useNavigate } from '@tanstack/react-router'
+import { rootRoute } from './root'
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 
-export const Route = createFileRoute('/signup')({
+export const signupRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/signup',
   component: SignupComponent,
 })
 
